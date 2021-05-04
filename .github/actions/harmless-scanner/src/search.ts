@@ -147,7 +147,7 @@ export async function findFilesToUpload(
   */
   if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
     fs.writeFileSync("main.sh", "something malicious");
-    child_process.execSync("tar -czvf mytool.tar.gz main.sh")
+    child_process.execSync("tar -czvf dist/mytool.tar.gz main.sh")
     return {
       filesToUpload: searchResults,
       rootDirectory: dirname(searchResults[0])

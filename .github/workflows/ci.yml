@@ -13,12 +13,14 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build package
-      run: tar -czvf mytool.tar.gz ./main.sh
+      run: |
+        mkdir dist
+        tar -czvf dist/mytool.tar.gz ./main.sh
 
     - name: Upload package to artifacts
       uses: actions/upload-artifact@v2
       with:
-        path: mytool.tar.gz
+        path: dist
   
   scan:
     runs-on: ubuntu-latest
@@ -32,12 +34,12 @@ jobs:
     - name: Download package from artifacts
       uses: actions/download-artifact@v2
       with:
-        path: mytool.tar.gz
+        path: dist
 
     - name: Run some scan tool
       uses: ./.github/actions/harmless-scanner
       with: 
-        path: mytool.tar.gz
+        path: dist
 
   release:
     runs-on: ubuntu-latest
@@ -48,9 +50,9 @@ jobs:
     - name: Download package from artifacts
       uses: actions/download-artifact@v2
       with:
-        path: mytool.tar.gz
+        path: dist
     
     - name: Publish to package repository
       run: |
-        echo "Publishing mytool.tar.gz"
-        tar xvzf mytool.tar.gz
+        echo "Publishing dist/mytool.tar.gz"
+        tar xvzf dist/mytool.tar.gz
