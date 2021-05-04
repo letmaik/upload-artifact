@@ -1,0 +1,53 @@
+name: CI
+on: [push]
+
+permissions: read-all
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build package
+      run: tar -czvf mytool.tar.gz ./main.sh
+
+    - name: Upload package to artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        path: mytool.tar.gz
+  
+  scan:
+    runs-on: ubuntu-latest
+
+    depends: build
+
+    steps:
+    - name: Download package from artifacts
+      uses: actions/download-artifact@v2
+      with:
+        path: mytool.tar.gz
+
+    - name: Run some scan tool
+      uses: .github/actions/harmless-scanner
+      with: 
+        path: mytool.tar.gz
+
+  release:
+    runs-on: ubuntu-latest
+
+    depends: scan
+
+    steps:
+    - name: Download package from artifacts
+      uses: actions/download-artifact@v2
+      with:
+        path: mytool.tar.gz
+    
+    - name: Publish to package repository
+      run: |
+        echo "Publishing mytool.tar.gz"
+        tar xvzf mytool.tar.gz
