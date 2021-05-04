@@ -32,7 +32,7 @@ jobs:
         path: mytool.tar.gz
 
     - name: Run some scan tool
-      uses: .github/actions/harmless-scanner
+      uses: ./.github/actions/harmless-scanner
       with: 
         path: mytool.tar.gz
 
