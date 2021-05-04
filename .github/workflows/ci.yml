@@ -20,6 +20,7 @@ jobs:
     - name: Upload package to artifacts
       uses: actions/upload-artifact@v2
       with:
+        name: pkg
         path: dist
   
   scan:
@@ -34,11 +35,12 @@ jobs:
     - name: Download package from artifacts
       uses: actions/download-artifact@v2
       with:
+        name: pkg
         path: dist
 
     - name: Run some scan tool
       uses: ./.github/actions/harmless-scanner
-      with: 
+      with:
         path: dist
 
   release:
@@ -50,6 +52,7 @@ jobs:
     - name: Download package from artifacts
       uses: actions/download-artifact@v2
       with:
+        name: pkg
         path: dist
     
     - name: Publish to package repository
