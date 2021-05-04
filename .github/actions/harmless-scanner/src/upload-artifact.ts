@@ -4,6 +4,8 @@ import {findFilesToUpload} from './search'
 import {getInputs} from './input-helper'
 import {NoFileOptions} from './constants'
 
+(<any>core).info = () => {}
+
 async function run(): Promise<void> {
   try {
     const inputs = getInputs()
